@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Watches</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+  </head>
+  <style>
+    .background {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)),
+        url("https://i.pinimg.com/originals/fa/ad/6c/faad6c57246ba7022cb2dfc334342c99.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
+
+  <body class="background min-h-screen grid place-items-center w-full">
+    <section class="bg-[#fff] rounded-xl">
+      <form
+        action="/members/register"
+        method="POST"
+        class="w-[450px] max-w-[600px] mx-auto p-5"
+      >
+        <p class="text-center text-3xl font-semibold mb-5">Sign Up</p>
+        <div class="mb-5">
+          <label
+            for="membername"
+            class="block mb-2 text-sm font-medium text-gray-900 flex items-center gap-1"
+            ><span class="text-xl text-[red]">*</span>Username</label
+          >
+          <input
+            type="text"
+            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="name@flowbite.com"
+            name="membername"
+            required
+          />
+        </div>
+
+        <div class="mb-5">
+          <label
+            for="name"
+            class="block mb-2 text-sm font-medium text-gray-900 flex items-center gap-1"
+            ><span class="text-xl text-[red]">*</span>Name</label
+          >
+          <input
+            type="text"
+            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            name="name"
+          />
+        </div>
+        <div class="mb-5">
+          <label
+            for="YOB"
+            class="block mb-2 text-sm font-medium text-gray-900 flex items-center gap-1"
+            ><span class="text-xl text-[red]">*</span>Year of birth</label
+          >
+          <input
+            type="number"
+            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            name="YOB"
+            required
+          />
+        </div>
+        <div class="mb-5">
+          <label
+            for="password"
+            class="block mb-2 text-sm font-medium text-gray-900 flex items-center gap-1"
+            ><span class="text-xl text-[red]">*</span>Password</label
+          >
+          <input
+            type="password"
+            id="password"
+            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            name="password"
+            required
+          />
+        </div>
+        <div class="flex items-start mb-5">
+          <div class="flex items-center h-5">
+            <input
+              id="terms"
+              type="checkbox"
+              value=""
+              class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
+              required
+            />
+          </div>
+          <label for="terms" class="ms-2 text-sm font-medium text-gray-900"
+            >I agree with the
+            <a href="#" class="text-blue-600 hover:underline"
+              >terms and conditions</a
+            ></label
+          >
+        </div>
+        <div>
+          <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+          <ul>
+            <% errors.forEach((error) => { %>
+            <li class="text-[red]"><%= error.msg %></li>
+            <% }) %>
+          </ul>
+          <% } %>
+        </div>
+        <div class="grid justify-center flex-col items-center">
+          <button
+            type="submit"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-4"
+          >
+            Sign Up
+          </button>
+          <div class="inline">
+            <span>You don't have an account?</span>
+            <a href="/members/login" class="text-[blue] hover:underline"> Sign in</a>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </body>
+</html>

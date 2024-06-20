@@ -1,0 +1,160 @@
+
+    <style>
+        .hidden {
+            display: none;
+        }
+        .automatic-watch {
+            border: 2px solid gold; /* Example of special styling */
+            background-color: #f9f9f9;
+        }
+        .automatic-icon {
+            color: gold;
+            font-size: 1.5em;
+            margin-right: 5px;
+        }
+    </style>
+
+<body>
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">Our Watches</h1>
+
+        <!-- Search Form -->
+        <form action="/watches/search" method="get" class="mb-4">
+            <input type="text" name="q" placeholder="Search by watch name" class="border p-2 rounded w-full" />
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-2">Search</button>
+        </form>
+
+        <!-- Filter Form -->
+        <form action="/watches/filter" method="get" class="mb-4">
+            <input type="text" name="brand" placeholder="Filter by brand name" class="border p-2 rounded w-full" />
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-2">Filter</button>
+        </form>
+
+        <!-- Add New Watch Form -->
+        <form action="/watches" method="post" class="mb-4">
+            <h2 class="text-2xl font-semibold mb-2">Add New Watch</h2>
+            <div class="mb-2">
+                <label for="watchName" class="block text-gray-700">Watch Name:</label>
+                <input type="text" name="watchName" id="watchName" class="border p-2 rounded w-full" required>
+            </div>
+            <div class="mb-2">
+                <label for="brand" class="block text-gray-700">Brand:</label>
+                <select name="brand" id="brand" class="border p-2 rounded w-full" required>
+                    <% brands.forEach(brand => { %>
+                        <option value="<%= brand._id %>"><%= brand.brandName %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="mb-2">
+                <label for="price" class="block text-gray-700">Price:</label>
+                <input type="number" name="price" id="price" class="border p-2 rounded w-full" required>
+            </div>
+            <div class="mb-2">
+                <label for="image" class="block text-gray-700">Image URL:</label>
+                <input type="text" name="image" id="image" class="border p-2 rounded w-full" required>
+            </div>
+            <div class="mb-2">
+                <label for="watchDescription" class="block text-gray-700">Description:</label>
+                <textarea name="watchDescription" id="watchDescription" rows="4" class="border p-2 rounded w-full" required></textarea>
+            </div>
+            <div class="mb-2">
+                <label for="automatic" class="block text-gray-700">Automatic:</label>
+                <select name="automatic" id="automatic" class="border p-2 rounded w-full" required>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-green-500 text-white p-2 rounded">Add Watch</button>
+        </form>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+            <% watches.forEach(watch => { %>
+                <div class="watch-item bg-white shadow-md rounded-lg overflow-hidden <%= watch.automatic ? 'automatic-watch' : '' %>">
+                    <img src="<%= watch.image %>" alt="<%= watch.watchName %>" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold">
+                            <% if (watch.automatic) { %>
+                                <i class="automatic-icon">⚙️</i>
+                            <% } %>
+                            <%= watch.watchName %>
+                        </h3>
+                        <% if (watch.brand) { %>
+                            <p class="text-gray-600 mb-4">Brand: <%= watch.brand.brandName %></p>
+                        <% } else { %>
+                            <p class="text-gray-600 mb-4">Brand: Unknown</p>
+                        <% } %>
+                        <p class="text-gray-600">Price: $<%= watch.price %></p>
+                        <button onclick="showEditForm('<%= watch._id %>')" class="bg-yellow-500 text-white p-2 rounded mt-2">Edit</button>
+                        <button onclick="confirmDelete('<%= watch._id %>')" class="bg-red-500 text-white p-2 rounded mt-2">Delete</button>
+                    </div>
+                    <div id="edit-form-<%= watch._id %>" class="edit-form hidden p-4 bg-gray-100 rounded-lg">
+                        <form action="/watches/<%= watch._id %>?_method=PUT" method="post">
+                            <div class="mb-2">
+                                <label for="edit-watchName-<%= watch._id %>" class="block text-gray-700">Watch Name:</label>
+                                <input type="text" name="watchName" id="edit-watchName-<%= watch._id %>" value="<%= watch.watchName %>" class="border p-2 rounded w-full" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="edit-brand-<%= watch._id %>" class="block text-gray-700">Brand:</label>
+                                <select name="brand" id="edit-brand-<%= watch._id %>" class="border p-2 rounded w-full" required>
+                                    <% brands.forEach(brand => { %>
+                                        <option value="<%= brand._id %>" <%= watch.brand && watch.brand._id == brand._id ? 'selected' : '' %>><%= brand.brandName %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            <div class="mb-2">
+                                <label for="edit-price-<%= watch._id %>" class="block text-gray-700">Price:</label>
+                                <input type="number" name="price" id="edit-price-<%= watch._id %>" value="<%= watch.price %>" class="border p-2 rounded w-full" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="edit-image-<%= watch._id %>" class="block text-gray-700">Image URL:</label>
+                                <input type="text" name="image" id="edit-image-<%= watch._id %>" value="<%= watch.image %>" class="border p-2 rounded w-full" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="edit-watchDescription-<%= watch._id %>" class="block text-gray-700">Description:</label>
+                                <textarea name="watchDescription" id="edit-watchDescription-<%= watch._id %>" rows="4" class="border p-2 rounded w-full" required><%= watch.watchDescription %></textarea>
+                            </div>
+                            <div class="mb-2">
+                                <label for="edit-automatic-<%= watch._id %>" class="block text-gray-700">Automatic:</label>
+                                <select name="automatic" id="edit-automatic-<%= watch._id %>" class="border p-2 rounded w-full" required>
+                                    <option value="true" <%= watch.automatic ? 'selected' : '' %>>Yes</option>
+                                    <option value="false" <%= !watch.automatic ? 'selected' : '' %>>No</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Save</button>
+                            <button type="button" onclick="hideEditForm('<%= watch._id %>')" class="bg-gray-500 text-white p-2 rounded">Cancel</button>
+                        </form>
+                    </form>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    function showEditForm(watchId) {
+        document.getElementById('edit-form-' + watchId).classList.remove('hidden');
+    }
+
+    function hideEditForm(watchId) {
+        document.getElementById('edit-form-' + watchId).classList.add('hidden');
+    }
+
+    function confirmDelete(watchId) {
+        if (confirm('Are you sure you want to delete this watch?')) {
+            fetch('/watches/' + watchId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Failed to delete watch');
+                }
+            });
+        }
+    }
+</script>
+</body>

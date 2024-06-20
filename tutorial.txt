@@ -1,0 +1,11 @@
+- tải package
+
+npm i
+
+- tạo data
+
+node generateMockData.js
+
+- run project
+
+node index.js

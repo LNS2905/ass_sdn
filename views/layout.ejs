@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+        .automatic-watch {
+            border: 2px solid gold; /* Example of special styling */
+            background-color: #f9f9f9;
+        }
+        .automatic-icon {
+            color: gold;
+            font-size: 1.5em;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <% const showHeaderFooter = typeof noHeaderFooter !== 'undefined' ? !noHeaderFooter : true; %>
+    <% if (showHeaderFooter) { %>
+        <%- include('partials/header', { memberInformation: memberInformation }) %>
+    <% } %>
+    <main>
+        <%- body %>
+    </main>
+    <% if (showHeaderFooter) { %>
+        <%- include('partials/footer') %>
+    <% } %>
+</body>
+</html>

@@ -1,0 +1,83 @@
+
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+  <body>
+    <div class="relative overflow-x-auto m-20 sm:rounded-lg">
+      <h1 class="text-3xl font-bold">User management</h1>
+
+      <% if (typeof error !== 'undefined') { %>
+      <p class="text-[red] mb-3"><%= error %></p>
+      <% } %>
+      <div>
+        <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <ul>
+          <% errors.forEach((error) => { %>
+          <li class="text-[red]"><%= error.msg %></li>
+          <% }) %>
+        </ul>
+        <% } %>
+      </div>
+      <table
+        class="table-fixed w-full text-sm text-left rtl:text-right text-gray-500"
+      >
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3">Member name</th>
+            <th scope="col" class="px-6 py-3">Name</th>
+            <th scope="col" class="px-6 py-3">Year of birth</th>
+            <th scope="col" class="px-6 py-3">Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% members.forEach((member) => { %>
+
+          <tr class="odd:bg-white even:bg-gray-50 border-b">
+            <form action="" method="POST">
+              <th
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+              >
+                <%= member.membername %>
+              </th>
+              <th
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+              >
+                <%= member.name %>
+              </th>
+              <th
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+              >
+                <%= member.YOB %>
+              </th>
+              <td class="px-6 py-4">
+                <% if (member.isAdmin) { %>
+                <span
+                  class="bg-[#fff1f0] border-[#ffbdb9] border-2 text-[#ea9399] rounded-md px-5 py-1"
+                  >Admin</span
+                >
+                <% } else { %>
+                <span
+                  class="bg-[#e6f4ff] border-[#a3d3ff] border-2 text-[#417fe3] rounded-md px-5 py-1"
+                  >Member</span
+                >
+                <% } %>
+              </td>
+            
+            </form>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.8.2/alpine.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </body>
+

@@ -1,0 +1,14 @@
+
+<h2>Manage Comments</h2>
+<div class="comments-list">
+    <% comments.forEach(comment => { %>
+        <div class="comment">
+            <p>Rating: <%= comment.rating %></p>
+            <p><%= comment.content %></p>
+            <p>Author: <%= comment.author.membername %></p>
+            <form action="/comments/<%= comment._id %>/delete" method="post">
+                <button type="submit">Delete Comment</button>
+            </form>
+        </div>
+    <% }) %>
+</div>

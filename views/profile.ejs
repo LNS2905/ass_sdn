@@ -1,0 +1,96 @@
+
+  <body class="min-h-screen flex flex-col">
+    <div class="flex-grow flex items-center justify-center bg-gray-100">
+      <div class="bg-white shadow-md rounded-lg w-full max-w-md p-6 m-7">
+        <h2 class="text-2xl font-bold mb-4">User Profile</h2>
+        <form action="/members/edit/profile/<%= memberInformation._id %>" method="POST">
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="membername"
+              >Member Name</label
+            >
+            <input
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              id="membername"
+              type="text"
+              value="<%= memberInformation.membername %>"
+              readonly
+              disabled
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="password"
+              >Password</label
+            >
+            <input
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              id="password"
+              name="password"
+              type="password"
+              value="<%= memberInformation.password %>"
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="name"
+              >Name</label
+            >
+            <input
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              id="name"
+              type="text"
+              name="name"
+              value="<%= memberInformation.name %>"
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="yob"
+              >YOB</label
+            >
+            <input
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              id="yob"
+              type="text"
+              value="<%= memberInformation.YOB %>"
+              name="YOB"
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="isAdmin"
+              >Role</label
+            >
+            <input
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              id="isAdmin"
+              type="text"
+              value="<%= memberInformation.isAdmin ? 'ADMIN' : 'MEMBER' %>"
+              readonly
+              disabled
+            />
+          </div>
+          <div>
+            <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+            <ul>
+              <% errors.forEach((error) => { %>
+              <li class="text-[red]"><%= error.msg %></li>
+              <% }) %>
+            </ul>
+            <% } %>
+          </div>
+          <div class="mb-4">
+            <button
+              type="submit"
+              class="bg-blue-600 rounded-lg py-2 w-full mt-5 text-white font-bold"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+

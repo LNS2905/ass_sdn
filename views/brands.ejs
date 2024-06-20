@@ -1,0 +1,82 @@
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
+<body>
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">Our Brands</h1>
+
+        <!-- Add New Brand Form -->
+        <form action="/brands" method="post" class="mb-4">
+            <h2 class="text-2xl font-semibold mb-2">Add New Brand</h2>
+            <div class="mb-2">
+                <label for="brandName" class="block text-gray-700">Brand Name:</label>
+                <input type="text" name="brandName" id="brandName" class="border p-2 rounded w-full" required>
+            </div>
+            <button type="submit" class="bg-green-500 text-white p-2 rounded">Add Brand</button>
+        </form>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+            <% if (brands && brands.length > 0) { %>
+                <% brands.forEach(brand => { %>
+                    <div class="brand-item bg-white shadow-md rounded-lg overflow-hidden">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold"><a href="/brands/<%= brand._id %>"><%= brand.brandName %></a></h3>
+                            <button onclick="showEditForm('<%= brand._id %>')" class="bg-yellow-500 text-white p-2 rounded mt-2">Edit</button>
+                            <button  onclick="confirmDelete('<%= brand._id %>')" class="bg-red-500 text-white p-2 rounded mt-2">Delete</button>
+                        </div>
+                        <div id="edit-form-<%= brand._id %>" class="edit-form hidden p-4 bg-gray-100 rounded-lg">
+                            <form action="/brands/<%= brand._id %>?_method=PUT" method="post">
+                                <div class="mb-2">
+                                    <label for="edit-brandName-<%= brand._id %>" class="block text-gray-700">Brand Name:</label>
+                                    <input type="text" name="brandName" id="edit-brandName-<%= brand._id %>" value="<%= brand.brandName %>" class="border p-2 rounded w-full" required>
+                                </div>
+                                <button type="submit" class="bg-blue-500 text-white p-2 rounded">Save</button>
+                                <button type="button" onclick="hideEditForm('<%= brand._id %>')" class="bg-gray-500 text-white p-2 rounded">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No brands found.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function showEditForm(brandId) {
+            document.getElementById('edit-form-' + brandId).classList.remove('hidden');
+        }
+
+        function hideEditForm(brandId) {
+            document.getElementById('edit-form-' + brandId).classList.add('hidden');
+        }
+
+        function confirmDelete(brandId) {
+        
+            if (confirm('Are you sure you want to delete this brand?')) {
+          
+             
+
+                fetch('/brands/' + brandId, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    console.log(response)
+                if (response.ok) {
+                    window.location.href = '/brands';
+                } else {
+                    alert('Failed to delete watch');
+                }
+            })
+          
+    }
+}
+</script>
+</body>

@@ -1,0 +1,58 @@
+
+    <style>
+        .hidden {
+            display: none;
+        }
+        .automatic-watch {
+            border: 2px solid gold; /* Example of special styling */
+            background-color: #f9f9f9;
+        }
+        .automatic-icon {
+            color: gold;
+            font-size: 1.5em;
+            margin-right: 5px;
+        }
+    </style>
+
+<body>
+    <div class="relative overflow-x-auto m-20 sm:rounded-lg">
+        <h1 class="text-3xl font-bold">Welcome to the Watch Store</h1>
+        <p>Discover our collection of exclusive watches.</p>
+
+        <!-- Search Form -->
+        <form action="/watches/search" method="get" class="mb-4">
+            <input type="text" name="q" placeholder="Search by watch name" class="border p-2 rounded w-full" />
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-2">Search</button>
+        </form>
+
+        <!-- Filter Form -->
+        <form action="/watches/filter" method="get" class="mb-4">
+            <input type="text" name="brand" placeholder="Filter by brand name" class="border p-2 rounded w-full" />
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-2">Filter</button>
+        </form>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+            <% featuredWatches.forEach(watch => { %>
+                <a href="/watches/<%= watch._id %>" class="watch-item bg-white shadow-md rounded-lg overflow-hidden <%= watch.automatic ? 'automatic-watch' : '' %>">
+                    <img src="<%= watch.image %>" alt="<%= watch.watchName %>" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold">
+                            <% if (watch.automatic) { %>
+                                <i class="automatic-icon">⚙️</i>
+                            <% } %>
+                            <%= watch.watchName %>
+                        </h3>
+                        <% if (watch.brand) { %>
+                            <p class="text-gray-600 mb-4">Brand: <%= watch.brand.brandName %></p>
+                        <% } else { %>
+                            <p class="text-gray-600 mb-4">Brand: Unknown</p>
+                        <% } %>
+                        <p class="text-gray-600">Price: $<%= watch.price %></p>
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+    </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>

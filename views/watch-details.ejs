@@ -1,0 +1,87 @@
+<style>
+        .watch-details {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .watch-details img {
+            border-radius: 8px;
+        }
+        .comments .comment {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .edit-form {
+            display: none;
+        }
+    </style>
+
+<body class="bg-gray-100">
+    <div class="watch-details">
+        <img src="<%= watch.image %>" alt="<%= watch.watchName %>" class="w-full h-64 object-cover mb-4">
+        <h2 class="text-2xl font-bold mb-2"><%= watch.watchName %></h2>
+        <p class="text-xl text-gray-700 mb-4"><%= watch.price %> USD</p>
+        <p class="text-gray-600 mb-4"><%= watch.watchDescription %></p>
+        <p class="text-gray-600 mb-4">Brand: <%= watch.brand.brandName %></p>
+        <p class="text-gray-600 mb-4">Automatic: <%= watch.automatic ? 'Yes' : 'No' %></p>
+        
+        <div class="comments mt-6">
+            <h3 class="text-xl font-semibold mb-4">Comments</h3>
+            <% if (memberInformation) { %>
+                <form action="/comments/<%= watch._id %>" method="post" class="mb-4">
+                    <div class="mb-2">
+                        <label for="rating" class="block text-gray-700">Rating:</label>
+                        <input type="number" name="rating" id="rating" min="1" max="5" class="border p-2 rounded w-full" required>
+                    </div>
+                    <div class="mb-2">
+                        <label for="content" class="block text-gray-700">Comment:</label>
+                        <textarea name="content" id="content" rows="4" class="border p-2 rounded w-full" required></textarea>
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Submit Comment</button>
+                </form>
+            <% } %>
+            <% watch.comments.forEach(comment => { %>
+                <div class="comment p-4 bg-gray-50 rounded-lg mb-4">
+                    <p class="text-gray-700"><strong>Rating:</strong> <%= comment.rating %></p>
+                    <p class="text-gray-700"><%= comment.content %></p>
+                    <p class="text-gray-500 text-sm"><strong>Author:</strong> <%= comment.author ? comment.author.name : 'Unknown' %></p>
+                    <% if (memberInformation && comment.author && comment.author._id.toString() === memberInformation._id.toString()) { %>
+                        <button onclick="showEditForm('<%= comment._id %>')" class="text-blue-500 hover:text-blue-700">Edit</button>
+                        <form action="/comments/delete/<%= comment._id %>" method="post" class="inline-block ml-2">
+                            <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
+                        </form>
+                        <div id="edit-form-<%= comment._id %>" class="edit-form mt-4 p-4 bg-gray-100 rounded-lg">
+                            <form action="/comments/edit/<%= comment._id %>" method="post">
+                                <div class="mb-2">
+                                    <label for="edit-rating-<%= comment._id %>" class="block text-gray-700">Edit Rating:</label>
+                                    <input type="number" name="rating" id="edit-rating-<%= comment._id %>" min="1" max="5" value="<%= comment.rating %>" class="border p-2 rounded w-full" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="edit-content-<%= comment._id %>" class="block text-gray-700">Edit Comment:</label>
+                                    <textarea name="content" id="edit-content-<%= comment._id %>" rows="4" class="border p-2 rounded w-full" required><%= comment.content %></textarea>
+                                </div>
+                                <button type="submit" class="bg-blue-500 text-white p-2 rounded">Save</button>
+                                <button type="button" onclick="hideEditForm('<%= comment._id %>')" class="bg-gray-500 text-white p-2 rounded">Cancel</button>
+                            </form>
+                        </div>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function showEditForm(commentId) {
+            document.getElementById('edit-form-' + commentId).style.display = 'block';
+        }
+
+        function hideEditForm(commentId) {
+            document.getElementById('edit-form-' + commentId).style.display = 'none';
+        }
+    </script>
+</body>
